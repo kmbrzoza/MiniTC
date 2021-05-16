@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TicTacToe.ViewModel.BaseClass
+namespace MiniTC.ViewModel.BaseClass
 {
     class ViewModel : INotifyPropertyChanged
     {
