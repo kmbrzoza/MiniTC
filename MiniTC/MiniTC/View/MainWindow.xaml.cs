@@ -22,6 +22,7 @@ namespace MiniTC
     {
         public MainWindow()
         {
+            // adding test line
             InitializeComponent();
         }
     }
