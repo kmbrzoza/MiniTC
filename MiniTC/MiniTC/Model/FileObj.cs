@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace MiniTC.Model
 {
-    class File: AFile
+    class FileObj: AFile
     {
-        public override string Name { get { return System.IO.Path.GetFileName(Path); } }
+        public override string Name { get { return FileInfo.Name; } }
         public System.IO.FileInfo FileInfo;
 
-        public File(string filePath)
+        public FileObj(string filePath)
         {
             this.Path = filePath;
             FileInfo = new System.IO.FileInfo(filePath);
