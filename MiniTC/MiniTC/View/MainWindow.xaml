@@ -4,9 +4,33 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MiniTC"
+        xmlns:view="clr-namespace:MiniTC.View"
+        xmlns:vm="clr-namespace:MiniTC.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainViewModel x:Name="viewModel"></vm:MainViewModel>
+    </Window.DataContext>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <view:PanelTC PathString="{Binding Path=Left.ActualPath, Mode=TwoWay}"
+                      Drives="{Binding Path=Left.Drives, Mode=TwoWay}"
+                      SelectedDrive="{Binding Path=Left.SelectedDrive, Mode=TwoWay}"
+                      AllFiles="{Binding Path=Left.AllFiles, Mode=TwoWay}"
+                      SelectedFile="{Binding Path=Left.SelectedFile, Mode=TwoWay}"></view:PanelTC>
         
+        <view:PanelTC PathString="{Binding Path=Right.ActualPath, Mode=TwoWay}"
+                      Drives="{Binding Path=Right.Drives, Mode=TwoWay}"
+                      SelectedDrive="{Binding Path=Right.SelectedDrive, Mode=TwoWay}"
+                      AllFiles="{Binding Path=Right.AllFiles, Mode=TwoWay}"
+                      SelectedFile="{Binding Path=Right.SelectedFile, Mode=TwoWay}" Grid.Column="1"></view:PanelTC>
+
     </Grid>
 </Window>

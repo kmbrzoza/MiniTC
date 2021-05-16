@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MiniTC.View"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20px 10px">
+    <Grid Margin="10px 10px">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="2*"></ColumnDefinition>

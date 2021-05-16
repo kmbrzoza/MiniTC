@@ -6,7 +6,15 @@ using System.Threading.Tasks;
 
 namespace MiniTC.ViewModel
 {
-    class MainViewModel
+    public class MainViewModel : BaseClass.BaseViewModel
     {
+        public PanelTCViewModel Left { get; set; }
+        public PanelTCViewModel Right { get; set; }
+
+        public MainViewModel()
+        {
+            Left = new PanelTCViewModel();
+            Right = new PanelTCViewModel();
+        }
     }
 }
