@@ -6,16 +6,15 @@ using System.Threading.Tasks;
 
 namespace MiniTC.Model
 {
-    class File
+    class File: AFile
     {
-        public string FilePath { get; private set; }
-        public string Name { get { return System.IO.Path.GetFileName(FilePath); } }
-        private System.IO.FileInfo fileInfo;
+        public override string Name { get { return System.IO.Path.GetFileName(Path); } }
+        public System.IO.FileInfo FileInfo;
 
         public File(string filePath)
         {
-            this.FilePath = filePath;
-            fileInfo = new System.IO.FileInfo(filePath);
+            this.Path = filePath;
+            FileInfo = new System.IO.FileInfo(filePath);
         }
 
         public override string ToString()
