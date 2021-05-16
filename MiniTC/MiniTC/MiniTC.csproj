@@ -56,6 +56,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\AFile.cs" />
+    <Compile Include="ViewModel\BaseClass\BaseViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PanelTCViewModel.cs" />
     <Compile Include="View\PanelTC.xaml.cs">
       <DependentUpon>PanelTC.xaml</DependentUpon>
     </Compile>
@@ -70,7 +73,6 @@
     <Compile Include="Model\Directory.cs" />
     <Compile Include="Model\File.cs" />
     <Compile Include="ViewModel\BaseClass\RelayCommand.cs" />
-    <Compile Include="ViewModel\BaseClass\ViewModel.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

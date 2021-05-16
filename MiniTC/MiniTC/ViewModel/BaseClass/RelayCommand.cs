@@ -11,34 +11,33 @@ namespace MiniTC.ViewModel.BaseClass
     {
         public event EventHandler CanExecuteChanged 
         {
-            add 
-            {
-                if (_canExecute != null) CommandManager.RequerySuggested += value;
+            add {
+                if (canExecute != null) CommandManager.RequerySuggested += value; 
             }
-            remove
-            {
-                if (_canExecute != null) CommandManager.RequerySuggested -= value;
+            remove {
+                if (canExecute != null) CommandManager.RequerySuggested -= value;
             }
-            
         }
 
-        readonly Action<object> _execute;
-        readonly Predicate<object> _canExecute;
+        private Action<object> execute;
+        private Predicate<object> canExecute;
 
         public RelayCommand(Action<object> execute, Predicate<object> canExecute)
         {
-            _execute = execute;
-            _canExecute = canExecute;
+            this.execute = execute;
+            this.canExecute = canExecute;
         }
+
 
         public bool CanExecute(object parameter)
         {
-            return _canExecute == null ? true : _canExecute(parameter);
+
+            return canExecute==null ? true: canExecute(parameter);
         }
 
         public void Execute(object parameter)
         {
-            _execute(parameter);
+            execute(parameter);
         }
     }
 }
