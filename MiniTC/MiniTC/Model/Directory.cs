@@ -6,21 +6,20 @@ using System.Threading.Tasks;
 
 namespace MiniTC.Model
 {
-    class Directory
+    class Directory : AFile
     {
-        public string DirectoryPath { get; private set; }
-        public string Name { get { return System.IO.Path.GetDirectoryName(DirectoryPath); } }
-        private System.IO.DirectoryInfo fileInfo;
+        public override string Name { get { return System.IO.Path.GetDirectoryName(Path); } }
+        public  System.IO.DirectoryInfo DirectoryInfo;
 
         public Directory(string directoryPath)
         {
-            this.DirectoryPath = directoryPath;
-            fileInfo = new System.IO.DirectoryInfo(directoryPath);
+            this.Path = directoryPath;
+            DirectoryInfo = new System.IO.DirectoryInfo(directoryPath);
         }
 
         public override string ToString()
         {
-            return Name;
+            return "<D>" + Name;
         }
     }
 }
