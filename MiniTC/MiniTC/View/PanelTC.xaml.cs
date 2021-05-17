@@ -64,5 +64,36 @@ namespace MiniTC.View
             get { return (int)GetValue(SelectedFileProperty); }
             set { SetValue(SelectedFileProperty, value); }
         }
+
+
+        // EVENT - Double click on the list
+        //rejestracja zdarzenia tak, żeby możliwe było jego bindowanie
+        public static readonly RoutedEvent DblClickedEvent =
+        EventManager.RegisterRoutedEvent("TabItemSelected",
+                     RoutingStrategy.Bubble, typeof(RoutedEventHandler),
+                     typeof(PanelTC));
+
+        //definicja zdarzenia NumberChanged
+        public event RoutedEventHandler DblClicked
+        {
+            add { AddHandler(DblClickedEvent, value); }
+            remove { RemoveHandler(DblClickedEvent, value); }
+        }
+
+        //Metoda pomocnicza wywołująca zdarzenie
+        //przy okazji metoda ta tworzy obiekt argument przekazywany przez to zdarzenie
+        void RaiseDblClicked()
+        {
+            //argument zdarzenia
+            RoutedEventArgs newEventArgs =
+                    new RoutedEventArgs(PanelTC.DblClickedEvent);
+            //wywołanie zdarzenia
+            RaiseEvent(newEventArgs);
+        }
+
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            RaiseDblClicked();
+        }
     }
 }

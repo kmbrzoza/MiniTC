@@ -27,10 +27,16 @@
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
             SelectedIndex="{Binding Path=SelectedDrive, Mode=TwoWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"></ComboBox>
-        <ListBox Grid.Row="2" Grid.ColumnSpan="2"
+        <ListBox x:Name="lbFiles" Grid.Row="2" Grid.ColumnSpan="2"
             ItemsSource="{Binding Path=AllFiles, Mode=OneWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
             SelectedIndex="{Binding Path=SelectedFile, Mode=TwoWay,
-            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"></ListBox>
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}">
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <EventSetter Event="MouseDoubleClick" Handler="ListBoxItem_MouseDoubleClick"></EventSetter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
     </Grid>
 </UserControl>
