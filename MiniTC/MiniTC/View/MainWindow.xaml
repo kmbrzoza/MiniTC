@@ -46,6 +46,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </view:PanelTC>
-
+        <Button Grid.Row="1" Grid.ColumnSpan="2" Width="100px" Height="Auto" Margin="0 5" Content="Copy >>"
+                Command="{Binding Copy}"></Button>
     </Grid>
 </Window>

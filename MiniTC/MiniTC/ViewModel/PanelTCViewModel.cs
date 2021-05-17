@@ -169,6 +169,27 @@ namespace MiniTC.ViewModel
             GetFilesFromActualPath();
             SetFilesToAllFiles();
         }
+
+        public AFile GetSelectedFile()
+        {
+            // if file is not selected
+            if (SelectedFile == -1)
+                return null;
+
+            AFile selFile;
+            if (ActualPath != Drives[SelectedDrive])
+            {
+                // have to check if its ".." (previous directory)
+                if (SelectedFile == 0)
+                    return null;
+                // -1 because of previous folder ".."
+                selFile = Files[SelectedFile - 1];
+            }
+            else
+                selFile = Files[SelectedFile];
+
+            return selFile;
+        }
         #endregion
 
     }
