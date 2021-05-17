@@ -30,9 +30,7 @@ namespace MiniTC.ViewModel
             set
             {
                 selectedDrive = value;
-                ActualPath = Drives[SelectedDrive];
-                GetFilesFromPath(ActualPath);
-                SetFilesToAllFiles();
+                UpdatePathAndFiles();
             }
         }
         private string[] allFiles;
@@ -45,11 +43,13 @@ namespace MiniTC.ViewModel
 
         private List<AFile> Files;
 
+
         public PanelTCViewModel()
         {
             GetActiveDrives();
-            ActualPath = "test";
+            UpdatePathAndFiles();
         }
+
 
         public void GetActiveDrives()
         {
@@ -62,22 +62,19 @@ namespace MiniTC.ViewModel
 
         }
 
-        public void GetFilesFromPath(string path)
+        public void GetFilesFromActualPath()
         {
             Files = new List<AFile>();
             string[] dirs = null;
             string[] fils = null;
-            if (Directory.Exists(path))
+            if (Directory.Exists(ActualPath))
             {
-                dirs = Directory.GetDirectories(path);
-                fils = Directory.GetFiles(path);
+                dirs = Directory.GetDirectories(ActualPath);
+                fils = Directory.GetFiles(ActualPath);
             }
 
             foreach (var dir in dirs)
-            {
                 Files.Add(new DirectoryObj(dir));
-                Console.WriteLine(Path.GetDirectoryName( dir));
-            }
 
             foreach (var fil in fils)
                 Files.Add(new FileObj(fil));
@@ -85,11 +82,27 @@ namespace MiniTC.ViewModel
 
         public void SetFilesToAllFiles()
         {
-            // add here checking if path its drive, if yes add ".."
-            AllFiles = new string[Files.Count + 1];
-            AllFiles[0] = "..";
-            for (int i = 0; i < Files.Count; i++)
-                AllFiles[i + 1] = Files[i].ToString();
+            // checking if path its not drive, if yes add ".." for previous path
+            if(ActualPath != Drives[SelectedDrive])
+            {
+                AllFiles = new string[Files.Count + 1];
+                AllFiles[0] = "..";
+                for (int i = 0; i < Files.Count; i++)
+                    AllFiles[i + 1] = Files[i].ToString();
+            }
+            else
+            {
+                AllFiles = new string[Files.Count];
+                for (int i = 0; i < Files.Count; i++)
+                    AllFiles[i] = Files[i].ToString();
+            }            
+        }
+
+        public void UpdatePathAndFiles()
+        {
+            ActualPath = Drives[SelectedDrive];
+            GetFilesFromActualPath();
+            SetFilesToAllFiles();
         }
 
     }

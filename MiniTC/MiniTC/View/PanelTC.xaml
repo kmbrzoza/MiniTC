@@ -31,6 +31,7 @@
             ItemsSource="{Binding Path=AllFiles, Mode=OneWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
             SelectedIndex="{Binding Path=SelectedFile, Mode=TwoWay,
-            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"></ListBox>
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+                 MouseDoubleClick="ListBox_MouseDoubleClick"></ListBox>
     </Grid>
 </UserControl>
