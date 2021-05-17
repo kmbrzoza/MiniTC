@@ -91,7 +91,7 @@ namespace MiniTC.View
             RaiseEvent(newEventArgs);
         }
 
-        private void ListBox_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             RaiseDblClicked();
         }

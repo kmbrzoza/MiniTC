@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:MiniTC"
         xmlns:view="clr-namespace:MiniTC.View"
         xmlns:vm="clr-namespace:MiniTC.ViewModel"
@@ -24,13 +25,27 @@
                       Drives="{Binding Path=Left.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Left.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Left.AllFiles, Mode=TwoWay}"
-                      SelectedFile="{Binding Path=Left.SelectedFile, Mode=TwoWay}"></view:PanelTC>
+                      SelectedFile="{Binding Path=Left.SelectedFile, Mode=TwoWay}">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DblClicked">
+                    <i:InvokeCommandAction Command="{Binding Left.FileDblClicked}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </view:PanelTC>
         
         <view:PanelTC PathString="{Binding Path=Right.ActualPath, Mode=TwoWay}"
                       Drives="{Binding Path=Right.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Right.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Right.AllFiles, Mode=TwoWay}"
-                      SelectedFile="{Binding Path=Right.SelectedFile, Mode=TwoWay}" Grid.Column="1"></view:PanelTC>
+                      SelectedFile="{Binding Path=Right.SelectedFile, Mode=TwoWay}" Grid.Column="1">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DblClicked">
+                    <i:InvokeCommandAction Command="{Binding Right.FileDblClicked}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </view:PanelTC>
 
     </Grid>
 </Window>

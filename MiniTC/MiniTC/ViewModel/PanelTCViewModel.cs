@@ -9,13 +9,24 @@ using System.Threading.Tasks;
 namespace MiniTC.ViewModel
 {
     using Model;
-    public class PanelTCViewModel : BaseClass.BaseViewModel
+    using BaseClass;
+    using System.Windows.Input;
+    using System.Windows;
+
+    public class PanelTCViewModel : BaseViewModel
     {
+        //PROPERTIES
+        #region PROPERTIES
         private string actualPath;
         public string ActualPath
         {
             get { return actualPath; }
-            set { actualPath = value; onPropertyChanged(nameof(ActualPath)); }
+            set
+            {
+                actualPath = value;
+                onPropertyChanged(nameof(ActualPath));
+                UpdateFiles();
+            }
         }
         private string[] drives;
         public string[] Drives
@@ -30,7 +41,7 @@ namespace MiniTC.ViewModel
             set
             {
                 selectedDrive = value;
-                UpdatePathAndFiles();
+                UpdatePathToDriveAndFiles();
             }
         }
         private string[] allFiles;
@@ -42,15 +53,63 @@ namespace MiniTC.ViewModel
         public int SelectedFile { get; set; }
 
         private List<AFile> Files;
+        #endregion
 
-
+        // CTOR
         public PanelTCViewModel()
         {
             GetActiveDrives();
-            UpdatePathAndFiles();
+            UpdatePathToDriveAndFiles();
         }
 
+        // ICOMMANDS
+        #region ICOMMANDS
 
+        private ICommand fileDblClicked = null;
+        public ICommand FileDblClicked
+        {
+            get
+            {
+                if (fileDblClicked == null)
+                {
+                    fileDblClicked = new RelayCommand(
+                        arg =>
+                        {
+                            DirectoryObj selFile = null;
+                            if (ActualPath != Drives[SelectedDrive])
+                            {
+                                // have to check if its ".." (previous directory)
+                                if (SelectedFile == 0)
+                                {
+                                    if (Directory.GetParent(ActualPath).Exists)
+                                        ActualPath = Directory.GetParent(ActualPath).FullName;
+                                    return;
+                                }
+                                // -1 because of previous folder ".."
+                                selFile = Files[SelectedFile - 1] as DirectoryObj;
+                            }
+                            else
+                                selFile = Files[SelectedFile] as DirectoryObj;
+
+                            if (selFile != null)
+                            {
+                                if (Directory.Exists(selFile.Path))
+                                {
+                                    ActualPath = selFile.Path;
+                                }
+                            }
+                        },
+                        arg => true
+                        );
+                }
+                return fileDblClicked;
+            }
+        }
+
+        #endregion
+
+        // FUNCTIONS
+        #region FUNCTIONS
         public void GetActiveDrives()
         {
             var drivs = DriveInfo.GetDrives();
@@ -83,7 +142,7 @@ namespace MiniTC.ViewModel
         public void SetFilesToAllFiles()
         {
             // checking if path its not drive, if yes add ".." for previous path
-            if(ActualPath != Drives[SelectedDrive])
+            if (ActualPath != Drives[SelectedDrive])
             {
                 AllFiles = new string[Files.Count + 1];
                 AllFiles[0] = "..";
@@ -95,15 +154,22 @@ namespace MiniTC.ViewModel
                 AllFiles = new string[Files.Count];
                 for (int i = 0; i < Files.Count; i++)
                     AllFiles[i] = Files[i].ToString();
-            }            
+            }
         }
 
-        public void UpdatePathAndFiles()
+        public void UpdatePathToDriveAndFiles()
         {
             ActualPath = Drives[SelectedDrive];
             GetFilesFromActualPath();
             SetFilesToAllFiles();
         }
+
+        public void UpdateFiles()
+        {
+            GetFilesFromActualPath();
+            SetFilesToAllFiles();
+        }
+        #endregion
 
     }
 }
