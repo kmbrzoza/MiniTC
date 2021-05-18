@@ -26,10 +26,12 @@
                       SelectedDrive="{Binding Path=Left.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Left.AllFiles, Mode=TwoWay}"
                       SelectedFile="{Binding Path=Left.SelectedFile, Mode=TwoWay}">
-
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DblClicked">
                     <i:InvokeCommandAction Command="{Binding Left.FileDblClicked}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="DropDownCB">
+                    <i:InvokeCommandAction Command="{Binding Left.DrivesDropDown}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </view:PanelTC>
@@ -43,6 +45,9 @@
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DblClicked">
                     <i:InvokeCommandAction Command="{Binding Right.FileDblClicked}"/>
+                </i:EventTrigger>
+                <i:EventTrigger EventName="DropDownCB">
+                    <i:InvokeCommandAction Command="{Binding Right.DrivesDropDown}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </view:PanelTC>

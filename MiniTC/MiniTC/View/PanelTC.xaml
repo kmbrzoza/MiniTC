@@ -22,11 +22,14 @@
             Text="{Binding Path=PathString, Mode=OneWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"></TextBox>
         <Label Content="Drive" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></Label>
+        
         <ComboBox Grid.Row="1" Grid.Column="1" Width="100px"
             ItemsSource="{Binding Path=Drives, Mode=OneWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
             SelectedIndex="{Binding Path=SelectedDrive, Mode=TwoWay,
-            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"></ComboBox>
+            RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
+            DropDownOpened="ComboBox_DropDownOpened"></ComboBox>
+        
         <ListBox x:Name="lbFiles" Grid.Row="2" Grid.ColumnSpan="2"
             ItemsSource="{Binding Path=AllFiles, Mode=OneWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"

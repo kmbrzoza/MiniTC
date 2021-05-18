@@ -24,5 +24,6 @@ namespace MiniTC
         {
             InitializeComponent();
         }
+
     }
 }
