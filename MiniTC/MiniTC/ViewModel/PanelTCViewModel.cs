@@ -76,6 +76,7 @@ namespace MiniTC.ViewModel
                         arg =>
                         {
                             DirectoryObj selFile = null;
+                            // checking if path is not selected drive
                             if (ActualPath != Drives[SelectedDrive])
                             {
                                 // have to check if its ".." (previous directory)
@@ -90,14 +91,12 @@ namespace MiniTC.ViewModel
                             }
                             else
                                 selFile = Files[SelectedFile] as DirectoryObj;
-
+                            
+                            // checking if directory exists
                             if (selFile != null)
-                            {
                                 if (Directory.Exists(selFile.Path))
-                                {
                                     ActualPath = selFile.Path;
-                                }
-                            }
+                            
                         },
                         arg => true
                         );
@@ -110,7 +109,7 @@ namespace MiniTC.ViewModel
 
         // FUNCTIONS
         #region FUNCTIONS
-        public void GetActiveDrives()
+        private void GetActiveDrives()
         {
             var drivs = DriveInfo.GetDrives();
             Drives = new string[drivs.Length];
@@ -121,7 +120,7 @@ namespace MiniTC.ViewModel
 
         }
 
-        public void GetFilesFromActualPath()
+        private void GetFilesFromActualPath()
         {
             Files = new List<AFile>();
             string[] dirs = null;
@@ -139,7 +138,7 @@ namespace MiniTC.ViewModel
                 Files.Add(new FileObj(fil));
         }
 
-        public void SetFilesToAllFiles()
+        private void SetFilesToAllFiles()
         {
             // checking if path its not drive, if yes add ".." for previous path
             if (ActualPath != Drives[SelectedDrive])
@@ -157,7 +156,7 @@ namespace MiniTC.ViewModel
             }
         }
 
-        public void UpdatePathToDriveAndFiles()
+        private void UpdatePathToDriveAndFiles()
         {
             ActualPath = Drives[SelectedDrive];
             GetFilesFromActualPath();
@@ -189,6 +188,15 @@ namespace MiniTC.ViewModel
                 selFile = Files[SelectedFile];
 
             return selFile;
+        }
+
+        public long? GetFreeSpaceFromSelectedDirve()
+        {
+            var drivs = DriveInfo.GetDrives();
+            foreach(var driv in drivs)
+                if (driv.Name == Drives[SelectedDrive])
+                    return driv.AvailableFreeSpace;
+            return null;
         }
         #endregion
 

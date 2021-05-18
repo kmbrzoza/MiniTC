@@ -36,25 +36,35 @@ namespace MiniTC.ViewModel
                         arg =>
                         {
                             var selFile = Left.GetSelectedFile();
-                            if (selFile == null) return;
-                            if (selFile is FileObj)
+                            
+                            if (selFile is FileObj srcFile)
                             {
-                                Console.WriteLine("test");
-                                //var leftFile = selFile as FileObj;
-                                string sourceFileName = selFile.Name;
-                                string sourceFilePath = selFile.Path;
+                                string sourceFileName = srcFile.Name;
+                                string sourceFilePath = srcFile.Path;
                                 string destinationDir = Right.ActualPath;
                                 string destinationPath = $@"{destinationDir}\{sourceFileName}";
 
-                                // add here checking free space on drive
-                                if (!File.Exists(destinationPath))
+                                var freeSpace = Right.GetFreeSpaceFromSelectedDirve();
+                                // disk error
+                                if (freeSpace == null)
                                 {
-                                    File.Copy(sourceFilePath, destinationPath);
-                                    Right.UpdateFiles();
+                                    MessageBox.Show("Disk error (check if your disk is connected)!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    return;
                                 }
-                                else
-                                    MessageBox.Show("Taki plik juz istnieje!", "UWAGA!", MessageBoxButton.OK, MessageBoxImage.Warning);
-
+                                // checking if file exists
+                                if (File.Exists(destinationPath))
+                                {
+                                    MessageBox.Show("Such a file already exists!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    return;
+                                }
+                                // if there is no space 
+                                if (freeSpace < srcFile.FileInfo.Length)
+                                {
+                                    MessageBox.Show("Out of disk space!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                                    return;
+                                }
+                                File.Copy(sourceFilePath, destinationPath);
+                                Right.UpdateFiles();
                             }
                         },
                         arg => true
