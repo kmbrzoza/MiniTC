@@ -127,8 +127,10 @@ namespace MiniTC.ViewModel
         #region FUNCTIONS
         private void GetActiveDrives()
         {
-            var drivs = DriveInfo.GetDrives();
-            Drives = drivs.Select(arg => arg.Name).ToArray();
+            //var drivs = DriveInfo.GetDrives();
+            //Drives = drivs.Select(arg => arg.Name).ToArray();
+            Drives = Directory.GetLogicalDrives();
+
         }
 
         private void GetFilesFromActualPath()
