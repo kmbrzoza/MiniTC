@@ -32,7 +32,7 @@ namespace MiniTC.ViewModel
         public string[] Drives
         {
             get { return drives; }
-            set { drives = value; onPropertyChanged(nameof(Drives)); }
+            set { drives = value; onPropertyChanged(nameof(Drives)); } 
         }
         private int selectedDrive { get; set; }
         public int SelectedDrive
@@ -91,17 +91,33 @@ namespace MiniTC.ViewModel
                             }
                             else
                                 selFile = Files[SelectedFile] as DirectoryObj;
-                            
+
                             // checking if directory exists
                             if (selFile != null)
                                 if (Directory.Exists(selFile.Path))
                                     ActualPath = selFile.Path;
-                            
+
                         },
                         arg => true
                         );
                 }
                 return fileDblClicked;
+            }
+        }
+
+        private ICommand drivesDropDown = null;
+        public ICommand DrivesDropDown
+        {
+            get
+            {
+                if (drivesDropDown == null)
+                {
+                    drivesDropDown = new RelayCommand(
+                        arg => { GetActiveDrives(); },
+                        arg => true
+                        );
+                }
+                return drivesDropDown;
             }
         }
 
@@ -112,12 +128,7 @@ namespace MiniTC.ViewModel
         private void GetActiveDrives()
         {
             var drivs = DriveInfo.GetDrives();
-            Drives = new string[drivs.Length];
-            for (int i = 0; i < drivs.Length; i++)
-            {
-                Drives[i] = drivs[i].Name;
-            }
-
+            Drives = drivs.Select(arg => arg.Name).ToArray();
         }
 
         private void GetFilesFromActualPath()
@@ -193,7 +204,7 @@ namespace MiniTC.ViewModel
         public long? GetFreeSpaceFromSelectedDirve()
         {
             var drivs = DriveInfo.GetDrives();
-            foreach(var driv in drivs)
+            foreach (var driv in drivs)
                 if (driv.Name == Drives[SelectedDrive])
                     return driv.AvailableFreeSpace;
             return null;
