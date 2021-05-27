@@ -25,7 +25,7 @@
                       Drives="{Binding Path=Left.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Left.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Left.AllFiles, Mode=TwoWay}"
-                      SelectedFile="{Binding Path=Left.SelectedFile, Mode=TwoWay}">
+                      SelectedFile="{Binding Path=LeftSelectedFile, Mode=TwoWay}">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DblClicked">
                     <i:InvokeCommandAction Command="{Binding Left.FileDblClicked}"/>
@@ -40,7 +40,7 @@
                       Drives="{Binding Path=Right.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Right.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Right.AllFiles, Mode=TwoWay}"
-                      SelectedFile="{Binding Path=Right.SelectedFile, Mode=TwoWay}" Grid.Column="1">
+                      SelectedFile="{Binding Path=RightSelectedFile, Mode=TwoWay}" Grid.Column="1">
 
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DblClicked">
