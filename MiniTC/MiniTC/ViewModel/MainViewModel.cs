@@ -44,6 +44,8 @@ namespace MiniTC.ViewModel
         {
             Left = new PanelTCViewModel();
             Right = new PanelTCViewModel();
+            LeftSelectedFile = -1;
+            RightSelectedFile = -1;
         }
 
         // ICOMMANDS
@@ -71,7 +73,7 @@ namespace MiniTC.ViewModel
 
         // METHODS
         #region METHODS
-        public void CopyFileFromTo(PanelTCViewModel From, PanelTCViewModel To)
+        private void CopyFileFromTo(PanelTCViewModel From, PanelTCViewModel To)
         {
             var selFile = From.GetSelectedFile();
             if (selFile == null) return;
@@ -114,7 +116,7 @@ namespace MiniTC.ViewModel
                     MessageBox.Show("Such a directory already exists!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
-                // getting space (weight) from all files
+                // getting space from all files
                 long totalSpace = 0;
                 foreach (string filePath in Directory.GetFiles(sourceFilePath, "*.*", SearchOption.AllDirectories))
                     totalSpace += new FileInfo(filePath).Length;
@@ -125,6 +127,8 @@ namespace MiniTC.ViewModel
                     MessageBox.Show("Out of disk space!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
+                // at first, creating destination directory
+                Directory.CreateDirectory(destinationPath);
                 // copying - recursively (first all directories, next all files)
                 foreach (string dirPath in Directory.GetDirectories(sourceFilePath, "*", SearchOption.AllDirectories))
                     Directory.CreateDirectory(dirPath.Replace(sourceFilePath, destinationPath));
