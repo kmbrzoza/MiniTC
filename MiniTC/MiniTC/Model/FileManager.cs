@@ -72,6 +72,26 @@ namespace MiniTC.Model
             }
         }
 
+        public static void Delete(AFile selectedFile)
+        {
+            if (selectedFile is null) throw new Exception(ERR_SEL_FILE);
+
+            if (selectedFile is FileObj srcFile)
+            {
+                var filePath = srcFile.Path;
+                if (!File.Exists(filePath)) throw new Exception(ERR_SEL_FILE);
+                File.Delete(filePath);
+            }
+
+            if (selectedFile is DirectoryObj srcDir)
+            {
+                var dirPath = srcDir.Path;
+                if(!Directory.Exists(dirPath)) throw new Exception(ERR_SEL_FILE);
+                Directory.Delete(dirPath);
+            }
+
+        }
+
         private static long? GetFreeSpaceFromPath(string path)
         {
             var pathDrive = Path.GetPathRoot(path).ToUpper();
