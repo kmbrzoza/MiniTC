@@ -69,6 +69,46 @@ namespace MiniTC.ViewModel
                 return copy;
             }
         }
+
+        private ICommand delete = null;
+        public ICommand Delete
+        {
+            get
+            {
+                if (delete == null)
+                {
+                    delete = new RelayCommand(
+                        arg =>
+                        {
+                            if (LeftSelectedFile >= 0) DeleteSelectedFileIn(Left);
+                            else if (RightSelectedFile >= 0) DeleteSelectedFileIn(Right);
+                        },
+                        arg => true
+                        );
+                }
+                return delete;
+            }
+        }
+
+        private ICommand move = null;
+        public ICommand Move
+        {
+            get
+            {
+                if (move == null)
+                {
+                    move = new RelayCommand(
+                        arg =>
+                        {
+                            if (LeftSelectedFile >= 0) MoveFileFromTo(Left, Right);
+                            else if (RightSelectedFile >= 0) MoveFileFromTo(Right, Left);
+                        },
+                        arg => true
+                        );
+                }
+                return move;
+            }
+        }
         #endregion
 
         // METHODS
@@ -88,6 +128,42 @@ namespace MiniTC.ViewModel
                 return;
             }
 
+            To.UpdateFiles();
+        }
+
+        private void DeleteSelectedFileIn(PanelTCViewModel In)
+        {
+            var selFile = In.GetSelectedFile();
+
+            try
+            {
+                FileManager.Delete(selFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            In.UpdateFiles();
+        }
+
+        private void MoveFileFromTo(PanelTCViewModel From, PanelTCViewModel To)
+        {
+            var selFile = From.GetSelectedFile();
+            var destinationDir = To.GetCurrentDir();
+
+            try
+            {
+                FileManager.Move(selFile, destinationDir);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            From.UpdateFiles();
             To.UpdateFiles();
         }
         #endregion
