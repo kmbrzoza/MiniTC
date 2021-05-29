@@ -69,6 +69,46 @@ namespace MiniTC.ViewModel
                 return copy;
             }
         }
+
+        private ICommand delete = null;
+        public ICommand Delete
+        {
+            get
+            {
+                if (delete == null)
+                {
+                    delete = new RelayCommand(
+                        arg =>
+                        {
+                            if (LeftSelectedFile >= 0) DeleteSelectedFileIn(Left);
+                            else if (RightSelectedFile >= 0) DeleteSelectedFileIn(Right);
+                        },
+                        arg => true
+                        );
+                }
+                return delete;
+            }
+        }
+
+        private ICommand move = null;
+        public ICommand Move
+        {
+            get
+            {
+                if (move == null)
+                {
+                    move = new RelayCommand(
+                        arg =>
+                        {
+                            if (LeftSelectedFile >= 0) MoveFileFromTo(Left, Right);
+                            else if (RightSelectedFile >= 0) MoveFileFromTo(Right, Left);
+                        },
+                        arg => true
+                        );
+                }
+                return move;
+            }
+        }
         #endregion
 
         // METHODS
@@ -76,72 +116,54 @@ namespace MiniTC.ViewModel
         private void CopyFileFromTo(PanelTCViewModel From, PanelTCViewModel To)
         {
             var selFile = From.GetSelectedFile();
-            if (selFile == null) return;
+            var destinationDir = To.GetCurrentDir();
 
-            string sourceFileName = selFile.Name;
-            string sourceFilePath = selFile.Path;
-            string destinationDir = To.GetActualPathOrNull();
-            string destinationPath = $@"{destinationDir}\{sourceFileName}";
-
-            if (destinationDir is null)
+            try
             {
-                MessageBox.Show("Path error (check your destination path)!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                FileManager.Copy(selFile, destinationDir);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            var freeSpace = To.GetFreeSpaceFromSelectedDirve();
-            // disk error
-            if (freeSpace == null)
+            To.UpdateFiles();
+        }
+
+        private void DeleteSelectedFileIn(PanelTCViewModel In)
+        {
+            var selFile = In.GetSelectedFile();
+
+            try
             {
-                MessageBox.Show("Disk error (check if your disk is connected)!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                FileManager.Delete(selFile);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            if (selFile is FileObj srcFile)
+
+            In.UpdateFiles();
+        }
+
+        private void MoveFileFromTo(PanelTCViewModel From, PanelTCViewModel To)
+        {
+            var selFile = From.GetSelectedFile();
+            var destinationDir = To.GetCurrentDir();
+
+            try
             {
-                // checking if file exists
-                if (File.Exists(destinationPath))
-                {
-                    MessageBox.Show("Such a file already exists!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                // if there is no space 
-                if (freeSpace < srcFile.FileInfo.Length)
-                {
-                    MessageBox.Show("Out of disk space!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                // copying
-                File.Copy(sourceFilePath, destinationPath);
+                FileManager.Move(selFile, destinationDir);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
             }
 
-            if (selFile is DirectoryObj)
-            {
-                // checking if directory exists
-                if (Directory.Exists(destinationPath))
-                {
-                    MessageBox.Show("Such a directory already exists!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                // getting space from all files
-                long totalSpace = 0;
-                foreach (string filePath in Directory.GetFiles(sourceFilePath, "*.*", SearchOption.AllDirectories))
-                    totalSpace += new FileInfo(filePath).Length;
-
-                // if there is no space 
-                if (freeSpace < totalSpace)
-                {
-                    MessageBox.Show("Out of disk space!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                // at first, creating destination directory
-                Directory.CreateDirectory(destinationPath);
-                // copying - recursively (first all directories, next all files)
-                foreach (string dirPath in Directory.GetDirectories(sourceFilePath, "*", SearchOption.AllDirectories))
-                    Directory.CreateDirectory(dirPath.Replace(sourceFilePath, destinationPath));
-                foreach (string filePath in Directory.GetFiles(sourceFilePath, "*.*", SearchOption.AllDirectories))
-                    File.Copy(filePath, filePath.Replace(sourceFilePath, destinationPath), true);
-            }
-
+            From.UpdateFiles();
             To.UpdateFiles();
         }
         #endregion

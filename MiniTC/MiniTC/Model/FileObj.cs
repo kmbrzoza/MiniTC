@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiniTC.Model
 {
-    class FileObj: AFile
+    public class FileObj: AFile
     {
         public override string Name { get { return FileInfo.Name; } }
         public System.IO.FileInfo FileInfo;

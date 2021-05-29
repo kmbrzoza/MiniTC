@@ -62,6 +62,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\AFile.cs" />
+    <Compile Include="Model\FileManager.cs" />
     <Compile Include="ViewModel\BaseClass\BaseViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\PanelTCViewModel.cs" />

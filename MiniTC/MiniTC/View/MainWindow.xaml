@@ -21,7 +21,7 @@
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <view:PanelTC PathString="{Binding Path=Left.ActualPath, Mode=TwoWay}"
+        <view:PanelTC PathString="{Binding Path=Left.CurrentPath, Mode=TwoWay}"
                       Drives="{Binding Path=Left.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Left.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Left.AllFiles, Mode=TwoWay}"
@@ -36,7 +36,7 @@
             </i:Interaction.Triggers>
         </view:PanelTC>
 
-        <view:PanelTC PathString="{Binding Path=Right.ActualPath, Mode=TwoWay}"
+        <view:PanelTC PathString="{Binding Path=Right.CurrentPath, Mode=TwoWay}"
                       Drives="{Binding Path=Right.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Right.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Right.AllFiles, Mode=TwoWay}"
@@ -50,7 +50,19 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </view:PanelTC>
-        <Button Grid.Row="1" Grid.ColumnSpan="2" Width="100px" Height="Auto" Margin="0 5" Content="Copy"
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+            <Button  Width="100px" Height="Auto" Margin="0 5" Content="Copy"
                 Command="{Binding Copy}"></Button>
+            <Button Grid.Column="1"  Width="100px" Height="Auto" Margin="0 5" Content="Delete"
+                Command="{Binding Delete}"></Button>
+            <Button Grid.Column="2"  Width="100px" Height="Auto" Margin="0 5" Content="Move"
+                Command="{Binding Move}"></Button>
+        </Grid>
     </Grid>
 </Window>

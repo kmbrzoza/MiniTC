@@ -17,14 +17,14 @@ namespace MiniTC.ViewModel
     {
         //PROPERTIES
         #region PROPERTIES
-        private string actualPath;
-        public string ActualPath
+        private string currentPath;
+        public string CurrentPath
         {
-            get { return actualPath; }
+            get { return currentPath; }
             set
             {
-                actualPath = value;
-                onPropertyChanged(nameof(ActualPath));
+                currentPath = value;
+                onPropertyChanged(nameof(CurrentPath));
                 if (Directory.Exists(value))
                 {
                     // checking if pathroot changed (if yes, update it)
@@ -57,7 +57,7 @@ namespace MiniTC.ViewModel
                 selectedDrive = value;
                 onPropertyChanged(nameof(SelectedDrive));
                 // if user clicked on combobox and changed drive, update path to drive and files
-                if (Path.GetPathRoot(ActualPath).ToUpper() != Drives[SelectedDrive])
+                if (Path.GetPathRoot(CurrentPath).ToUpper() != Drives[SelectedDrive])
                     UpdatePathToDriveAndFiles();
             }
         }
@@ -94,13 +94,13 @@ namespace MiniTC.ViewModel
                         {
                             DirectoryObj selFile = null;
                             // checking if path is not selected drive
-                            if (ActualPath != Drives[SelectedDrive])
+                            if (CurrentPath != Drives[SelectedDrive])
                             {
                                 // have to check if its ".." (previous directory)
                                 if (SelectedFile == 0)
                                 {
-                                    if (Directory.GetParent(ActualPath).Exists)
-                                        ActualPath = Directory.GetParent(ActualPath).FullName;
+                                    if (Directory.GetParent(CurrentPath).Exists)
+                                        CurrentPath = Directory.GetParent(CurrentPath).FullName;
                                     return;
                                 }
                                 // -1 because of previous folder ".."
@@ -112,7 +112,7 @@ namespace MiniTC.ViewModel
                             // checking if directory exists
                             if (selFile != null)
                                 if (Directory.Exists(selFile.Path))
-                                    ActualPath = selFile.Path;
+                                    CurrentPath = selFile.Path;
 
                         },
                         arg => true
@@ -152,10 +152,10 @@ namespace MiniTC.ViewModel
             Files = new List<AFile>();
             string[] dirs = null;
             string[] fils = null;
-            if (Directory.Exists(ActualPath))
+            if (Directory.Exists(CurrentPath))
             {
-                dirs = Directory.GetDirectories(ActualPath);
-                fils = Directory.GetFiles(ActualPath);
+                dirs = Directory.GetDirectories(CurrentPath);
+                fils = Directory.GetFiles(CurrentPath);
             }
 
             foreach (var dir in dirs)
@@ -169,7 +169,7 @@ namespace MiniTC.ViewModel
         {
             string[] filesTab;
             // checking if path its not drive, if yes add ".." for previous path
-            if (ActualPath.ToUpper() != Drives[SelectedDrive])
+            if (CurrentPath.ToUpper() != Drives[SelectedDrive])
             {
                 filesTab = new string[Files.Count + 1];
                 filesTab[0] = "..";
@@ -187,7 +187,7 @@ namespace MiniTC.ViewModel
 
         private void UpdatePathToDriveAndFiles()
         {
-            ActualPath = Drives[SelectedDrive];
+            CurrentPath = Drives[SelectedDrive];
             GetFilesFromActualPath();
             SetFilesToAllFiles();
         }
@@ -205,7 +205,7 @@ namespace MiniTC.ViewModel
                 return null;
 
             AFile selFile;
-            if (ActualPath != Drives[SelectedDrive])
+            if (CurrentPath != Drives[SelectedDrive])
             {
                 // have to check if its ".." (previous directory)
                 if (SelectedFile == 0)
@@ -219,19 +219,11 @@ namespace MiniTC.ViewModel
             return selFile;
         }
 
-        public long? GetFreeSpaceFromSelectedDirve()
-        {
-            var drivs = DriveInfo.GetDrives();
-            foreach (var driv in drivs)
-                if (driv.Name == Drives[SelectedDrive])
-                    return driv.AvailableFreeSpace;
-            return null;
-        }
 
-        public string GetActualPathOrNull()
+        public DirectoryObj GetCurrentDir()
         {
-            if (Directory.Exists(ActualPath))
-                return ActualPath;
+            if (Directory.Exists(CurrentPath))
+                return new DirectoryObj(CurrentPath);
             return null;
         }
         #endregion
