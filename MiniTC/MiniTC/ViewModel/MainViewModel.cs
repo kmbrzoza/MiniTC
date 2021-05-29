@@ -80,8 +80,14 @@ namespace MiniTC.ViewModel
 
             string sourceFileName = selFile.Name;
             string sourceFilePath = selFile.Path;
-            string destinationDir = To.ActualPath;
+            string destinationDir = To.GetActualPathOrNull();
             string destinationPath = $@"{destinationDir}\{sourceFileName}";
+
+            if (destinationDir is null)
+            {
+                MessageBox.Show("Path error (check your destination path)!", "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
             var freeSpace = To.GetFreeSpaceFromSelectedDirve();
             // disk error

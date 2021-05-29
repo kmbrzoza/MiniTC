@@ -35,13 +35,12 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </view:PanelTC>
-        
+
         <view:PanelTC PathString="{Binding Path=Right.ActualPath, Mode=TwoWay}"
                       Drives="{Binding Path=Right.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Right.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Right.AllFiles, Mode=TwoWay}"
                       SelectedFile="{Binding Path=RightSelectedFile, Mode=TwoWay}" Grid.Column="1">
-
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="DblClicked">
                     <i:InvokeCommandAction Command="{Binding Right.FileDblClicked}"/>
