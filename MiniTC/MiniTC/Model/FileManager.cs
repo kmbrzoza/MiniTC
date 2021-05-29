@@ -17,6 +17,8 @@ namespace MiniTC.Model
         private const string ERR_SEL_FILE = "There is no selected file!";
         private const string ERR_DEST_FILE = "Path error(check your destination path)!";
 
+        //METHODS
+        #region
         public static void Copy(AFile selectedFile, DirectoryObj destination)
         {
             if (selectedFile is null) throw new Exception(ERR_SEL_FILE);
@@ -89,8 +91,49 @@ namespace MiniTC.Model
                 if(!Directory.Exists(dirPath)) throw new Exception(ERR_SEL_FILE);
                 Directory.Delete(dirPath);
             }
-
         }
+
+        public static void Move(AFile selectedFile, DirectoryObj destination)
+        {
+            if (selectedFile is null) throw new Exception(ERR_SEL_FILE);
+            if (destination is null) throw new Exception(ERR_DEST_FILE);
+
+            string sourceFileName = selectedFile.Name;
+            string sourceFilePath = selectedFile.Path;
+            string destinationDir = destination.Path;
+            string destinationPath = $@"{destinationDir}\{sourceFileName}";
+
+            var freeSpace = GetFreeSpaceFromPath(destinationDir);
+
+            if (freeSpace is null) throw new Exception(ERR_DISK_CONN);
+
+            if (selectedFile is FileObj srcFile)
+            {
+                if (File.Exists(destinationPath))
+                    throw new Exception(ERR_FILE_EXISTS);
+
+                if (freeSpace < srcFile.FileInfo.Length)
+                    throw new Exception(ERR_FREE_SPACE);
+
+                File.Move(sourceFilePath, destinationPath);
+            }
+
+            if (selectedFile is DirectoryObj)
+            {
+                if (Directory.Exists(destinationPath))
+                    throw new Exception(ERR_DIR_EXISTS);
+
+                long totalSpace = 0;
+                foreach (string filePath in Directory.GetFiles(sourceFilePath, "*.*", SearchOption.AllDirectories))
+                    totalSpace += new FileInfo(filePath).Length;
+
+                if (freeSpace < totalSpace)
+                    throw new Exception(ERR_FREE_SPACE);
+
+                Directory.Move(sourceFilePath, destinationPath);
+            }
+        }
+
 
         private static long? GetFreeSpaceFromPath(string path)
         {
@@ -101,5 +144,6 @@ namespace MiniTC.Model
                     return drive.AvailableFreeSpace;
             return null;
         }
+        #endregion
     }
 }
