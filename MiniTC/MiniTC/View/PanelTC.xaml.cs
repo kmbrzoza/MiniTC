@@ -92,30 +92,23 @@ namespace MiniTC.View
         }
 
 
-        // EVENT - Click on dropDown combobox (drives)
-        //rejestracja zdarzenia tak, żeby możliwe było jego bindowanie
         public static readonly RoutedEvent DropDownCBEvent =
         EventManager.RegisterRoutedEvent("DropDownCB",
                      RoutingStrategy.Bubble, typeof(RoutedEventHandler),
                      typeof(PanelTC));
 
-        //definicja zdarzenia NumberChanged
         public event RoutedEventHandler DropDownCB
         {
             add { AddHandler(DropDownCBEvent, value); }
             remove { RemoveHandler(DropDownCBEvent, value); }
         }
-
-        //Metoda pomocnicza wywołująca zdarzenie
-        //przy okazji metoda ta tworzy obiekt argument przekazywany przez to zdarzenie
         void RaiseDropDownCB()
         {
-            //argument zdarzenia
             RoutedEventArgs newEventArgs =
                     new RoutedEventArgs(PanelTC.DropDownCBEvent);
-            //wywołanie zdarzenia
             RaiseEvent(newEventArgs);
         }
+
 
         private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -126,5 +119,6 @@ namespace MiniTC.View
         {
             RaiseDropDownCB();
         }
+
     }
 }
