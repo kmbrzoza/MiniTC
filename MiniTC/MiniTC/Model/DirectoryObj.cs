@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MiniTC.Model
 {
-    class DirectoryObj : AFile
+    public class DirectoryObj : AFile
     {
         public override string Name { get { return DirectoryInfo.Name; } }
         public  System.IO.DirectoryInfo DirectoryInfo;

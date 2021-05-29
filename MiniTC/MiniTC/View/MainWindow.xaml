@@ -21,7 +21,7 @@
             <RowDefinition Height="10*"></RowDefinition>
             <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
-        <view:PanelTC PathString="{Binding Path=Left.ActualPath, Mode=TwoWay}"
+        <view:PanelTC PathString="{Binding Path=Left.CurrentPath, Mode=TwoWay}"
                       Drives="{Binding Path=Left.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Left.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Left.AllFiles, Mode=TwoWay}"
@@ -36,7 +36,7 @@
             </i:Interaction.Triggers>
         </view:PanelTC>
 
-        <view:PanelTC PathString="{Binding Path=Right.ActualPath, Mode=TwoWay}"
+        <view:PanelTC PathString="{Binding Path=Right.CurrentPath, Mode=TwoWay}"
                       Drives="{Binding Path=Right.Drives, Mode=TwoWay}"
                       SelectedDrive="{Binding Path=Right.SelectedDrive, Mode=TwoWay}"
                       AllFiles="{Binding Path=Right.AllFiles, Mode=TwoWay}"
