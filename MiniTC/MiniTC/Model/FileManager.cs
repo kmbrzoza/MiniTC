@@ -17,6 +17,7 @@ namespace MiniTC.Model
         private const string ERR_SEL_FILE = "There is no selected file!";
         private const string ERR_DEST_FILE = "Path error(check your destination path)!";
         private const string ERR_ACCESS_DENIED = "Access denied!";
+        private const string ERR_NAME_NOT_DEF = "Name of file not defined!";
 
         //METHODS
         #region
@@ -135,9 +136,40 @@ namespace MiniTC.Model
             }
         }
 
+        public static void Rename(AFile selectedFile, string newName)
+        {
+            if (selectedFile is null) throw new Exception(ERR_SEL_FILE);
+            if (newName is null) throw new Exception(ERR_NAME_NOT_DEF);
+
+            string sourceFilePath = selectedFile.Path;
+            string parentPath = GetParentPath(sourceFilePath);
+            string destinationPath = $@"{parentPath}\{newName}";
+
+            if (selectedFile is FileObj srcFile)
+            {
+                // adding extension to file
+                destinationPath += srcFile.FileInfo.Extension;
+
+                if (File.Exists(destinationPath))
+                    throw new Exception(ERR_FILE_EXISTS);
+
+                // Rename
+                File.Move(sourceFilePath, destinationPath);
+            }
+
+            if (selectedFile is DirectoryObj)
+            {
+                if (Directory.Exists(destinationPath))
+                    throw new Exception(ERR_DIR_EXISTS);
+
+                Directory.Move(sourceFilePath, destinationPath);
+            }
+        }
+
         public static void CreateDirectory(DirectoryObj destination, string nameDir)
         {
             if (destination is null) throw new Exception(ERR_DEST_FILE);
+            if (nameDir is null) throw new Exception(ERR_NAME_NOT_DEF);
 
             string destinationPath = $@"{destination.Path}\{nameDir}";
 

@@ -110,6 +110,26 @@ namespace MiniTC.ViewModel
                 return move;
             }
         }
+
+        private ICommand rename = null;
+        public ICommand Rename
+        {
+            get
+            {
+                if (rename == null)
+                {
+                    rename = new RelayCommand(
+                        arg =>
+                        {
+                            if (LeftSelectedFile >= 0) RenameSelectedFileIn(Left);
+                            else if (RightSelectedFile >= 0) RenameSelectedFileIn(Right);
+                        },
+                        arg => true
+                        );
+                }
+                return rename;
+            }
+        }
         #endregion
 
         // METHODS
@@ -168,6 +188,28 @@ namespace MiniTC.ViewModel
             To.UpdateFiles();
         }
 
+        private void RenameSelectedFileIn(PanelTCViewModel In)
+        {
+            var selFile = In.GetSelectedFile();
+
+            var newName = View.InputBox.Prompt("Rename a file", "New name of file");
+
+            // if is null, just do nothing
+            if (newName != null)
+            {
+                try
+                {
+                    FileManager.Rename(selFile, newName);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                In.UpdateFiles();
+
+            }
+        }
 
         //private void ShowInputDialog()
         #endregion

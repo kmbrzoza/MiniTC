@@ -91,7 +91,7 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
-
+                <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Content="Copy"
                 Command="{Binding Copy}" Style="{StaticResource RoundedButton}"></Button>
@@ -99,6 +99,8 @@
                 Command="{Binding Delete}" Style="{StaticResource RoundedButton}"></Button>
             <Button Grid.Column="2" Content="Move"
                 Command="{Binding Move}" Style="{StaticResource RoundedButton}"></Button>
+            <Button Grid.Column="3" Content="Rename"
+                Command="{Binding Rename}" Style="{StaticResource RoundedButton}"></Button>
         </Grid>
     </Grid>
 </Window>
