@@ -127,5 +127,11 @@
   <ItemGroup>
     <Resource Include="Icons\newDirIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\copyFileIcon.png" />
+    <Resource Include="Icons\deleteFileIcon.png" />
+    <Resource Include="Icons\moveFileIcon.png" />
+    <Resource Include="Icons\renameFileIcon.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
