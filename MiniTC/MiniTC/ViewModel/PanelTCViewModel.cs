@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
+using System.Windows;
 
 namespace MiniTC.ViewModel
 {
     using Model;
     using BaseClass;
-    using System.Windows.Input;
-    using System.Windows;
 
     public class PanelTCViewModel : BaseViewModel
     {
@@ -25,10 +23,10 @@ namespace MiniTC.ViewModel
             {
                 currentPath = value;
                 onPropertyChanged(nameof(CurrentPath));
-                if (Directory.Exists(value))
+                if (FileManager.DirectoryExists(value))
                 {
                     // checking if pathroot changed (if yes, update it)
-                    var actualDrv = Path.GetPathRoot(value).ToUpper();
+                    var actualDrv = FileManager.GetDriveFromPath(value);
                     if (actualDrv != Drives[SelectedDrive])
                     {
                         for (int i = 0; i < Drives.Length; i++)
@@ -57,7 +55,7 @@ namespace MiniTC.ViewModel
                 selectedDrive = value;
                 onPropertyChanged(nameof(SelectedDrive));
                 // if user clicked on combobox and changed drive, update path to drive and files
-                if (Path.GetPathRoot(CurrentPath).ToUpper() != Drives[SelectedDrive])
+                if (FileManager.GetDriveFromPath(CurrentPath) != Drives[SelectedDrive])
                     UpdatePathToDriveAndFiles();
             }
         }
@@ -99,8 +97,9 @@ namespace MiniTC.ViewModel
                                 // have to check if its ".." (previous directory)
                                 if (SelectedFile == 0)
                                 {
-                                    if (Directory.GetParent(CurrentPath).Exists)
-                                        CurrentPath = Directory.GetParent(CurrentPath).FullName;
+                                    string parentPath = FileManager.GetParentPath(CurrentPath);
+                                    if (FileManager.DirectoryExists(parentPath))
+                                        CurrentPath = parentPath;
                                     return;
                                 }
                                 // -1 because of previous folder ".."
@@ -111,7 +110,7 @@ namespace MiniTC.ViewModel
 
                             // checking if directory exists
                             if (selFile != null)
-                                if (Directory.Exists(selFile.Path))
+                                if (FileManager.DirectoryExists(selFile.Path))
                                     CurrentPath = selFile.Path;
 
                         },
@@ -160,25 +159,21 @@ namespace MiniTC.ViewModel
         #region FUNCTIONS
         private void GetActiveDrives()
         {
-            Drives = Directory.GetLogicalDrives();
+            Drives = FileManager.GetActiveDrives();
         }
 
         private void GetFilesFromActualPath()
         {
             Files = new List<AFile>();
-            string[] dirs = null;
-            string[] fils = null;
-            if (Directory.Exists(CurrentPath))
+            try
             {
-                dirs = Directory.GetDirectories(CurrentPath);
-                fils = Directory.GetFiles(CurrentPath);
+                Files = FileManager.GetFilesByPath(CurrentPath);
             }
-
-            foreach (var dir in dirs)
-                Files.Add(new DirectoryObj(dir));
-
-            foreach (var fil in fils)
-                Files.Add(new FileObj(fil));
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
         }
 
         private void SetFilesToAllFiles()
@@ -237,7 +232,7 @@ namespace MiniTC.ViewModel
 
         public DirectoryObj GetCurrentDir()
         {
-            if (Directory.Exists(CurrentPath))
+            if (FileManager.DirectoryExists(CurrentPath))
                 return new DirectoryObj(CurrentPath);
             return null;
         }

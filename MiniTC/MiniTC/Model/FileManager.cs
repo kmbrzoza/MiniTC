@@ -16,6 +16,7 @@ namespace MiniTC.Model
         private const string ERR_DIR_EXISTS = "Such a directory already exists!";
         private const string ERR_SEL_FILE = "There is no selected file!";
         private const string ERR_DEST_FILE = "Path error(check your destination path)!";
+        private const string ERR_ACCESS_DENIED = "Access denied!";
 
         //METHODS
         #region
@@ -146,6 +147,69 @@ namespace MiniTC.Model
             Directory.CreateDirectory(destinationPath);
         }
 
+        public static DirectoryObj GetDirectory(string path)
+        {
+            if (Directory.Exists(path))
+                return new DirectoryObj(path);
+            return null;
+        }
+
+        public static FileObj GetFile(string path)
+        {
+            if (File.Exists(path))
+                return new FileObj(path);
+            return null;
+        }
+
+        public static List<AFile> GetFilesByPath(string path)
+        {
+            List<AFile> Files = new List<AFile>();
+            string[] dirs = null;
+            string[] fils = null;
+
+            // if path don't exists, return empty list
+            if (Directory.Exists(path))
+            {
+                try
+                {
+                    dirs = Directory.GetDirectories(path);
+                    fils = Directory.GetFiles(path);
+                }
+                catch (Exception)
+                {
+                    // if access denied
+                    throw new Exception(ERR_ACCESS_DENIED);
+                }
+            }
+
+            foreach (var dir in dirs)
+                Files.Add(new DirectoryObj(dir));
+
+            foreach (var fil in fils)
+                Files.Add(new FileObj(fil));
+
+            return Files;
+        }
+
+        public static bool DirectoryExists(string path)
+        {
+            return Directory.Exists(path);
+        }
+
+        public static string[] GetActiveDrives()
+        {
+            return Directory.GetLogicalDrives();
+        }
+
+        public static string GetDriveFromPath(string path)
+        {
+            return Path.GetPathRoot(path).ToUpper();
+        }
+
+        public static string GetParentPath(string path)
+        {
+            return Directory.GetParent(path).FullName;
+        }
 
         private static long? GetFreeSpaceFromPath(string path)
         {
