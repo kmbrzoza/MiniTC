@@ -190,7 +190,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="Black">
+                        <Border CornerRadius="8" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="Black">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
                             </ContentPresenter>
                         </Border>
@@ -240,7 +240,8 @@
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
             DropDownOpened="ComboBox_DropDownOpened"></ComboBox>
 
-            <Button Grid.Column="2" Style="{StaticResource RoundedButton}" Width="40" Height="25" Click="Button_Click">
+            <Button Grid.Column="2" Style="{StaticResource RoundedButton}" 
+                    Width="40" Height="25" Click="Button_Click" HorizontalAlignment="Right">
                 <Image Source="..\Icons\newDirIcon.png"></Image>
             </Button>
         </Grid>

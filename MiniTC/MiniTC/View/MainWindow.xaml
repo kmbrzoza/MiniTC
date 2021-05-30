@@ -17,7 +17,7 @@
         <Style x:Key="RoundedButton" TargetType="Button">
             <Setter Property="FontSize" Value="18"></Setter>
             <Setter Property="Background" Value="White"></Setter>
-            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="Width" Value="110"></Setter>
             <Setter Property="Height" Value="32"></Setter>
             <Setter Property="Template">
                 <Setter.Value>
@@ -40,7 +40,7 @@
             </Style.Triggers>
         </Style>
     </Window.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -85,7 +85,7 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </view:PanelTC>
-        
+
         <Grid Grid.Row="1" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition></ColumnDefinition>
@@ -93,14 +93,34 @@
                 <ColumnDefinition></ColumnDefinition>
                 <ColumnDefinition></ColumnDefinition>
             </Grid.ColumnDefinitions>
-            <Button Content="Copy"
-                Command="{Binding Copy}" Style="{StaticResource RoundedButton}"></Button>
-            <Button Grid.Column="1" Content="Delete"
-                Command="{Binding Delete}" Style="{StaticResource RoundedButton}"></Button>
-            <Button Grid.Column="2" Content="Move"
-                Command="{Binding Move}" Style="{StaticResource RoundedButton}"></Button>
-            <Button Grid.Column="3" Content="Rename"
-                Command="{Binding Rename}" Style="{StaticResource RoundedButton}"></Button>
+            <Button
+                Command="{Binding Copy}" Style="{StaticResource RoundedButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="..\Icons\copyFileIcon.png"></Image>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Copy"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="1"
+                Command="{Binding Delete}" Style="{StaticResource RoundedButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="..\Icons\deleteFileIcon.png"></Image>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Delete"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="2"
+                Command="{Binding Move}" Style="{StaticResource RoundedButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="..\Icons\moveFileIcon.png" Margin="0 0 0 1"></Image>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Move"></TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3"
+                Command="{Binding Rename}" Style="{StaticResource RoundedButton}">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="..\Icons\renameFileIcon.png"></Image>
+                    <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="Rename"></TextBlock>
+                </StackPanel>
+            </Button>
         </Grid>
     </Grid>
 </Window>
