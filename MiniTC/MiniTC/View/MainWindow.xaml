@@ -8,10 +8,39 @@
         xmlns:view="clr-namespace:MiniTC.View"
         xmlns:vm="clr-namespace:MiniTC.ViewModel"
         mc:Ignorable="d"
-        Title="MiniTC" Height="450" Width="800">
+        Title="MiniTC" Height="450" Width="800" MinHeight="450" MinWidth="800">
     <Window.DataContext>
         <vm:MainViewModel x:Name="viewModel"></vm:MainViewModel>
     </Window.DataContext>
+
+    <Window.Resources>
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="Width" Value="100"></Setter>
+            <Setter Property="Height" Value="32"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="14" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFDADADA"></Setter>
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Background" Value="#FFAEAEAE"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -19,7 +48,7 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="10*"></RowDefinition>
-            <RowDefinition></RowDefinition>
+            <RowDefinition Height="1.1*"></RowDefinition>
         </Grid.RowDefinitions>
         <view:PanelTC PathString="{Binding Path=Left.CurrentPath, Mode=TwoWay}"
                       Drives="{Binding Path=Left.Drives, Mode=TwoWay}"
@@ -57,12 +86,12 @@
                 <ColumnDefinition></ColumnDefinition>
 
             </Grid.ColumnDefinitions>
-            <Button  Width="100px" Height="Auto" Margin="0 5" Content="Copy"
-                Command="{Binding Copy}"></Button>
-            <Button Grid.Column="1"  Width="100px" Height="Auto" Margin="0 5" Content="Delete"
-                Command="{Binding Delete}"></Button>
-            <Button Grid.Column="2"  Width="100px" Height="Auto" Margin="0 5" Content="Move"
-                Command="{Binding Move}"></Button>
+            <Button Content="Copy"
+                Command="{Binding Copy}" Style="{StaticResource RoundedButton}"></Button>
+            <Button Grid.Column="1" Content="Delete"
+                Command="{Binding Delete}" Style="{StaticResource RoundedButton}"></Button>
+            <Button Grid.Column="2" Content="Move"
+                Command="{Binding Move}" Style="{StaticResource RoundedButton}"></Button>
         </Grid>
     </Grid>
 </Window>
