@@ -110,6 +110,24 @@ namespace MiniTC.View
         }
 
 
+        public static readonly RoutedEvent BtnClickedEvent =
+        EventManager.RegisterRoutedEvent("BtnClicked",
+             RoutingStrategy.Bubble, typeof(RoutedEventHandler),
+             typeof(PanelTC));
+
+        public event RoutedEventHandler BtnClicked
+        {
+            add { AddHandler(BtnClickedEvent, value); }
+            remove { RemoveHandler(BtnClickedEvent, value); }
+        }
+        void RaiseBtnClicked()
+        {
+            RoutedEventArgs newEventArgs =
+                    new RoutedEventArgs(PanelTC.BtnClickedEvent);
+            RaiseEvent(newEventArgs);
+        }
+
+
         private void ListBoxItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             RaiseDblClicked();
@@ -120,5 +138,9 @@ namespace MiniTC.View
             RaiseDropDownCB();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RaiseBtnClicked();
+        }
     }
 }

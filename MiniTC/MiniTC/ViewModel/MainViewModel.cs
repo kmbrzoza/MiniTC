@@ -46,6 +46,7 @@ namespace MiniTC.ViewModel
             Right = new PanelTCViewModel();
             LeftSelectedFile = -1;
             RightSelectedFile = -1;
+            
         }
 
         // ICOMMANDS
@@ -166,6 +167,9 @@ namespace MiniTC.ViewModel
             From.UpdateFiles();
             To.UpdateFiles();
         }
+
+
+        //private void ShowInputDialog()
         #endregion
 
     }

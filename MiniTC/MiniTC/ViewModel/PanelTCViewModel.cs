@@ -138,6 +138,22 @@ namespace MiniTC.ViewModel
             }
         }
 
+        private ICommand newDir = null;
+        public ICommand NewDir
+        {
+            get
+            {
+                if (newDir == null)
+                {
+                    newDir = new RelayCommand(
+                        arg => { CreateNewDir(); },
+                        arg => true
+                        );
+                }
+                return newDir;
+            }
+        }
+
         #endregion
 
         // FUNCTIONS
@@ -219,12 +235,31 @@ namespace MiniTC.ViewModel
             return selFile;
         }
 
-
         public DirectoryObj GetCurrentDir()
         {
             if (Directory.Exists(CurrentPath))
                 return new DirectoryObj(CurrentPath);
             return null;
+        }
+
+        public void CreateNewDir()
+        {
+            var currentDir = GetCurrentDir();
+            string newDir = View.InputBox.Prompt("Creating new directory", "Name of new directory");
+            // if is null, just do nothing
+            if(newDir != null)
+            {
+                try
+                {
+                    FileManager.CreateDirectory(currentDir, newDir);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+                UpdateFiles();
+            }
         }
         #endregion
 
