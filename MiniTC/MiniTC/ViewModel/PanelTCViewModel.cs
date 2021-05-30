@@ -23,7 +23,7 @@ namespace MiniTC.ViewModel
             {
                 currentPath = value;
                 onPropertyChanged(nameof(CurrentPath));
-                if (FileManager.DirectoryExists(value))
+                if (DirectoryObj.Exists(value))
                 {
                     // checking if pathroot changed (if yes, update it)
                     var actualDrv = FileManager.GetDriveFromPath(value);
@@ -98,7 +98,7 @@ namespace MiniTC.ViewModel
                                 if (SelectedFile == 0)
                                 {
                                     string parentPath = FileManager.GetParentPath(CurrentPath);
-                                    if (FileManager.DirectoryExists(parentPath))
+                                    if (DirectoryObj.Exists(parentPath))
                                         CurrentPath = parentPath;
                                     return;
                                 }
@@ -110,7 +110,7 @@ namespace MiniTC.ViewModel
 
                             // checking if directory exists
                             if (selFile != null)
-                                if (FileManager.DirectoryExists(selFile.Path))
+                                if (DirectoryObj.Exists(selFile.Path))
                                     CurrentPath = selFile.Path;
 
                         },
@@ -232,9 +232,8 @@ namespace MiniTC.ViewModel
 
         public DirectoryObj GetCurrentDir()
         {
-            if (FileManager.DirectoryExists(CurrentPath))
-                return new DirectoryObj(CurrentPath);
-            return null;
+            // if path not exists - it returns null
+            return DirectoryObj.GetDirectoryObj(CurrentPath);
         }
 
         public void CreateNewDir()

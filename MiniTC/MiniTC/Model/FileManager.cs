@@ -179,20 +179,6 @@ namespace MiniTC.Model
             Directory.CreateDirectory(destinationPath);
         }
 
-        public static DirectoryObj GetDirectory(string path)
-        {
-            if (Directory.Exists(path))
-                return new DirectoryObj(path);
-            return null;
-        }
-
-        public static FileObj GetFile(string path)
-        {
-            if (File.Exists(path))
-                return new FileObj(path);
-            return null;
-        }
-
         public static List<AFile> GetFilesByPath(string path)
         {
             List<AFile> Files = new List<AFile>();
@@ -214,18 +200,15 @@ namespace MiniTC.Model
                 }
             }
 
-            foreach (var dir in dirs)
-                Files.Add(new DirectoryObj(dir));
+            if(dirs != null)
+                foreach (var dir in dirs)
+                    Files.Add(DirectoryObj.GetDirectoryObj(dir));
 
-            foreach (var fil in fils)
-                Files.Add(new FileObj(fil));
+            if(fils != null)
+                foreach (var fil in fils)
+                    Files.Add(FileObj.GetFileObj(fil));
 
             return Files;
-        }
-
-        public static bool DirectoryExists(string path)
-        {
-            return Directory.Exists(path);
         }
 
         public static string[] GetActiveDrives()
