@@ -46,7 +46,7 @@ namespace MiniTC.ViewModel
             Right = new PanelTCViewModel();
             LeftSelectedFile = -1;
             RightSelectedFile = -1;
-            
+
         }
 
         // ICOMMANDS
@@ -192,22 +192,25 @@ namespace MiniTC.ViewModel
         {
             var selFile = In.GetSelectedFile();
 
-            var newName = View.InputBox.Prompt("Rename a file", "New name of file");
-
             // if is null, just do nothing
-            if (newName != null)
+            if (selFile != null)
             {
-                try
-                {
-                    FileManager.Rename(selFile, newName);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
-                    return;
-                }
-                In.UpdateFiles();
+                var newName = View.InputBox.Prompt("Rename a file", "New name of file");
 
+                if (newName != null)
+                {
+                    try
+                    {
+                        FileManager.Rename(selFile, newName);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error!", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        return;
+                    }
+                    In.UpdateFiles();
+
+                }
             }
         }
 
