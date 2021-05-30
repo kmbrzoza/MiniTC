@@ -52,7 +52,7 @@
             <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
             <Setter Property="FontSize" Value="14" />
-            <Setter Property="MinWidth" Value="150"/>
+            <Setter Property="MinWidth" Value="120"/>
             <Setter Property="Height" Value="28"/>
 
             <Setter Property="Template">
@@ -183,12 +183,36 @@
         <Style x:Key="ListBoxStyle" TargetType="ListBox">
             <Setter Property="FontSize" Value="13"></Setter>
         </Style>
+
+        <Style x:Key="RoundedButton" TargetType="Button">
+            <Setter Property="FontSize" Value="18"></Setter>
+            <Setter Property="Background" Value="White"></Setter>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border CornerRadius="10" Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="Black">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center">
+                            </ContentPresenter>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#FFDADADA"></Setter>
+                    <Setter Property="Cursor" Value="Hand"></Setter>
+                </Trigger>
+                <Trigger Property="IsMouseCaptured" Value="True">
+                    <Setter Property="Background" Value="#FFAEAEAE"></Setter>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Control.Resources>
     
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="2*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition></RowDefinition>
@@ -200,15 +224,26 @@
         <TextBox Grid.Column="1" Style="{StaticResource TextBoxStyle}"
             Text="{Binding Path=PathString, Mode=TwoWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-        <Label Content="Drive" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" ></Label>
 
-        <ComboBox Grid.Row="1" Grid.Column="1" Width="100px" Style="{DynamicResource theComboBox}"
+        <Grid Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.44*"></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="0.75*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Label Content="Drive" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" ></Label>
+            
+            <ComboBox  Grid.Column="1" Width="100px" HorizontalAlignment="Left" Style="{DynamicResource theComboBox}"
             ItemsSource="{Binding Path=Drives, Mode=OneWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
             SelectedIndex="{Binding Path=SelectedDrive, Mode=TwoWay,
             RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type UserControl}}}"
-            DropDownOpened="ComboBox_DropDownOpened"
-            ></ComboBox>
+            DropDownOpened="ComboBox_DropDownOpened"></ComboBox>
+
+            <Button Grid.Column="2" Style="{StaticResource RoundedButton}" Width="40" Height="25" Click="Button_Click">
+                <Image Source="..\Icons\newDirIcon.png"></Image>
+            </Button>
+        </Grid>
 
         <ListBox x:Name="lbFiles" Grid.Row="2" Grid.ColumnSpan="2" Style="{StaticResource ListBoxStyle}"
             ItemsSource="{Binding Path=AllFiles, Mode=OneWay,

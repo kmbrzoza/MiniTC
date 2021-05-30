@@ -134,6 +134,18 @@ namespace MiniTC.Model
             }
         }
 
+        public static void CreateDirectory(DirectoryObj destination, string nameDir)
+        {
+            if (destination is null) throw new Exception(ERR_DEST_FILE);
+
+            string destinationPath = $@"{destination.Path}\{nameDir}";
+
+            if (Directory.Exists(destinationPath))
+                throw new Exception(ERR_DIR_EXISTS);
+
+            Directory.CreateDirectory(destinationPath);
+        }
+
 
         private static long? GetFreeSpaceFromPath(string path)
         {
