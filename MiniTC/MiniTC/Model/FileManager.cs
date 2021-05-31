@@ -91,7 +91,8 @@ namespace MiniTC.Model
             {
                 var dirPath = srcDir.Path;
                 if(!Directory.Exists(dirPath)) throw new Exception(ERR_SEL_FILE);
-                Directory.Delete(dirPath);
+
+                Directory.Delete(dirPath, true);
             }
         }
 
