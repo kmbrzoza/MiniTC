@@ -8,4 +8,4 @@ You can browse disks and folders on your computer, copy, delete, move, rename fi
 * C# WPF MVVM
 
 ## Screenshots
-![Screenshot](readmecontent\app.png)
+![Screenshot](readmecontent/app.png)
