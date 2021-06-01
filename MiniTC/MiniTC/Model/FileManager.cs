@@ -18,6 +18,7 @@ namespace MiniTC.Model
         private const string ERR_DEST_FILE = "Path error(check your destination path)!";
         private const string ERR_ACCESS_DENIED = "Access denied!";
         private const string ERR_NAME_NOT_DEF = "Name of file not defined!";
+        private const string ERR_PARENT_DIR = "Action impossible! Check parent and child directory!";
 
         //METHODS
         #region
@@ -56,6 +57,9 @@ namespace MiniTC.Model
                 // checking if directory exists in destination path
                 if (Directory.Exists(destinationPath))
                     throw new Exception(ERR_DIR_EXISTS);
+
+                if (destinationPath.Contains(sourceFilePath))
+                    throw new Exception(ERR_PARENT_DIR);
 
                 // getting space from all files
                 long totalSpace = 0;
@@ -125,6 +129,9 @@ namespace MiniTC.Model
             {
                 if (Directory.Exists(destinationPath))
                     throw new Exception(ERR_DIR_EXISTS);
+
+                if (destinationPath.Contains(sourceFilePath))
+                    throw new Exception(ERR_PARENT_DIR);
 
                 long totalSpace = 0;
                 foreach (string filePath in Directory.GetFiles(sourceFilePath, "*.*", SearchOption.AllDirectories))
