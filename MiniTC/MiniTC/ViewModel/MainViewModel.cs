@@ -45,7 +45,6 @@ namespace MiniTC.ViewModel
             Right = new PanelTCViewModel();
             LeftSelectedFile = -1;
             RightSelectedFile = -1;
-
         }
 
         // ICOMMANDS

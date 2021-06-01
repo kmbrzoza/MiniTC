@@ -179,23 +179,23 @@ namespace MiniTC.ViewModel
         private void SetFilesToAllFiles()
         {
             string[] filesTab;
-            string actualDrive = Drives[SelectedDrive];
+            string currentDrive = Drives[SelectedDrive];
+            // checking if path is drive, if not add ".." for previous path
+            // also checking if current path is like C:
+            if (CurrentPath.ToUpper() == currentDrive
+                || CurrentPath.ToUpper() == currentDrive.Substring(0, currentDrive.Length-1))
+            {
+                filesTab = new string[Files.Count];
+                for (int i = 0; i < Files.Count; i++)
+                    filesTab[i] = Files[i].ToString();
 
-            // checking if path its not drive, if yes add ".." for previous path
-            // also checking if actual path is like C: 
-            if (CurrentPath.ToUpper() != actualDrive 
-                && CurrentPath.ToUpper() != actualDrive.Substring(0, actualDrive.Length - 1))
+            }
+            else
             {
                 filesTab = new string[Files.Count + 1];
                 filesTab[0] = "..";
                 for (int i = 0; i < Files.Count; i++)
                     filesTab[i + 1] = Files[i].ToString();
-            }
-            else
-            {
-                filesTab = new string[Files.Count];
-                for (int i = 0; i < Files.Count; i++)
-                    filesTab[i] = Files[i].ToString();
             }
             AllFiles = filesTab;
         }

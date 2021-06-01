@@ -219,7 +219,10 @@ namespace MiniTC.Model
 
         public static string GetDriveFromPath(string path)
         {
-            return Path.GetPathRoot(path).ToUpper();
+            string drive = Path.GetPathRoot(path).ToUpper();
+            if (drive[drive.Length - 1] != '\\')
+                return drive + "\\";
+            return drive;
         }
 
         public static string GetParentPath(string path)
