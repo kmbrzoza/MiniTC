@@ -179,8 +179,12 @@ namespace MiniTC.ViewModel
         private void SetFilesToAllFiles()
         {
             string[] filesTab;
+            string actualDrive = Drives[SelectedDrive];
+
             // checking if path its not drive, if yes add ".." for previous path
-            if (CurrentPath.ToUpper() != Drives[SelectedDrive])
+            // also checking if actual path is like C: 
+            if (CurrentPath.ToUpper() != actualDrive 
+                && CurrentPath.ToUpper() != actualDrive.Substring(0, actualDrive.Length - 1))
             {
                 filesTab = new string[Files.Count + 1];
                 filesTab[0] = "..";

@@ -213,7 +213,6 @@ namespace MiniTC.ViewModel
             }
         }
 
-        //private void ShowInputDialog()
         #endregion
 
     }
